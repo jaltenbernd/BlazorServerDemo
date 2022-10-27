@@ -1,0 +1,64 @@
+﻿@page "/jstonet"
+@inject IJSRuntime JS
+
+<h2 class="mb-5">JavaScript Calling .NET Methods</h2>
+
+
+<CodeDisplay @ref="codeDisplayComponent" CodeSnippet="@snippet"></CodeDisplay>
+
+
+
+<button class="btn btn-primary mb-3" @onclick="ConvertArray">Convert Array</button>
+
+<p>
+    @text
+</p>
+
+
+<button type="button" class="btn btn-secondary mt-5" @onclick='() => DisplayCode("array")'>Display Code</button>
+
+
+
+@code {
+
+    private MarkupString text;
+    private IJSObjectReference jsModule = null!;
+    private string? snippet;
+    private CodeDisplay? codeDisplayComponent;
+
+    private uint[] quoteArray =
+        new uint[]
+        {
+            60, 101, 109, 62, 67, 97, 110, 39, 116, 32, 115, 116, 111, 112, 32,
+            116, 104, 101, 32, 115, 105, 103, 110, 97, 108, 44, 32, 77, 97,
+            108, 46, 60, 47, 101, 109, 62, 32, 45, 32, 77, 114, 46, 32, 85, 110,
+            105, 118, 101, 114, 115, 101, 10, 10,
+        };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/JStoNet.razor.js");
+        }
+    }
+
+    private async Task ConvertArray()
+    {
+        text = new(await jsModule.InvokeAsync<string>("convertArray", quoteArray));
+    }
+
+    private async void DisplayCode(string name)
+    {
+        switch (name)
+        {
+            case "array":
+                snippet = Resource.array;
+                break;
+
+            
+        }
+
+        await codeDisplayComponent!.Show();
+    }
+}

@@ -1,0 +1,140 @@
+﻿@page "/nettojs"
+@implements IDisposable
+@inject IJSRuntime JS
+
+<h2 class="mb-5">.NET Methods Calling JavaScript</h2>
+
+<CodeDisplay @ref="codeDisplayComponent" CodeSnippet="@snippet"></CodeDisplay>
+
+
+<div class="row">
+    <div class="col-6" style="border-right: 1px solid black;">
+        <button class="btn btn-primary mb-2" onclick="returnArrayAsync()">
+            Trigger .NET static method
+        </button>
+        <ul>
+            <li>Click button calls JS method.</li>
+            <li>JS method retrieves values from .NET method.</li>
+            <li>Display values in JS Alert.</li>
+        </ul>
+        <div class="text-end">
+            <button class="btn btn-secondary mt-3" @onclick='() => DisplayCode("static")'>Display Code</button>
+        </div>
+
+        <hr />
+
+        <p>Name: <input @bind="name" class="form-control" /></p>
+        <button class="btn btn-primary" @onclick="TriggerDotNetInstanceMethod">
+            Trigger .NET instance method
+        </button>
+        <p class="fw-bold mt-2">Result: @result</p>
+        <ul>
+            <li>Click button calls .NET method</li>
+            <li>.NET method invokes a JS method.</li>
+            <li>JS method then calls .NET method which display a calculated result.</li>
+        </ul>
+
+        <div class="text-end">
+            <button class="btn btn-secondary mt-3" @onclick='() => DisplayCode("instance")'>Display Code</button>
+        </div>
+    </div>
+    <div class="col-6">
+        <h4 class="mb-4">Multiple JS Functions</h4>
+        <p>Name: <input @bind="name2" class="form-control" /></p>
+        <button class="btn btn-primary mb-2 me-3" onclick="GreetingHelpers.sayHello()">
+            Trigger JS function - <strong>sayHello</strong>
+        </button>
+        <button class="btn btn-primary mb-2" onclick="GreetingHelpers.welcomeVisitor()">
+            Trigger JS function - <strong>welcomeVisitor</strong>
+        </button>
+        <ul>
+            <li>Click button calls a JS function within a JS class.</li>
+            <li>JS method calls the .NET Method</li>
+            <li>.NET returns message to JS function which uses an Alert.</li>
+        </ul>
+        <div class="text-end">
+            <button class="btn btn-secondary mt-3" @onclick='() => DisplayCode("multiple")'>Display Code</button>
+        </div>      
+    </div>
+</div>
+
+
+
+
+
+
+
+@code {
+
+    private string? snippet;
+    private CodeDisplay? codeDisplayComponent;
+
+    private string? name;
+    private string? name2;
+    private string? result;
+    private DotNetObjectReference<NetToJs>? objRef;
+    private DotNetObjectReference<NetToJs>? dotNetHelper;
+
+    protected override void OnInitialized()
+    {
+        objRef = DotNetObjectReference.Create(this);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/NetToJs.razor.js");
+            dotNetHelper = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("GreetingHelpers.setDotNetHelper", dotNetHelper);
+        }
+    }
+
+    public async Task TriggerDotNetInstanceMethod()
+    {
+        result = await JS.InvokeAsync<string>("sayHello1", objRef);
+    }
+
+    [JSInvokable]
+    public string GetHelloMessage() => $"Hello, {name}!";
+
+    [JSInvokable]
+    public string GetHelloMessage2() => $"Hello, {name2}!";
+
+    [JSInvokable]
+    public string GetWelcomeMessage() => $"Welcome, {name2}!";
+
+    [JSInvokable]
+    public static Task ReturnArrayAsync()
+    {
+        return Task.FromResult("You clicked on the Trigger .NET static method button.");
+    }
+
+    private async void DisplayCode(string name)
+    {
+        switch (name)
+        {
+            case "static":
+                snippet = Resource.StaticJS;
+                break;
+
+            case "instance":
+                snippet = Resource.Instance;
+                break;
+
+            case "multiple":
+                snippet = Resource.multiple;
+                break;
+        }
+
+        await codeDisplayComponent!.Show();
+    }
+
+
+    public void Dispose()
+    {
+        objRef?.Dispose();
+        dotNetHelper?.Dispose();
+    }
+
+}

@@ -1,0 +1,33 @@
+﻿@inject IJSRuntime JS
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="codeDisplay">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="codedisplaylabel">Code Display</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <pre><code>@CodeSnippet</code></pre>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string CodeSnippet { get; set; } = null!;
+
+    private IJSObjectReference jsModule = null!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/CodeDisplay.razor.js");
+        }
+    }
+
+    public async Task Show()
+    {
+        await jsModule.InvokeVoidAsync("toggleOffset");
+    }
+
+}

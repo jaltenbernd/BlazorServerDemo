@@ -1,0 +1,121 @@
+﻿@page "/forms"
+@using BlazorServerDemo.Helpers
+@using BlazorServerDemo.Models
+@inject IToastService toastService
+
+<PageTitle>Blazor Server Demo: Form</PageTitle>
+
+<h2 class="mb-5">Form Example</h2>
+
+
+@if (formSuccess)
+{
+    <p class="text-success">Success! Your form was submitted succesfully.</p>
+}
+
+<EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row">
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="firstname" class="form-label">First Name</label>
+                <InputText id="firstname" @bind-Value="model.FirstName" class="form-control" />
+                <ValidationMessage For="@(() => model.FirstName)" />
+            </div>
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Last Name</label>
+                <InputText id="lastname" @bind-Value="model.LastName" class="form-control" />
+            </div>
+            <div class="mb-5">
+                <label for="email" class="form-label">Email</label>
+                <InputText id="email" @bind-Value="model.Email" class="form-control" />
+            </div>
+
+            <ValidationMessage For="() => model.Options" />
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" @bind-value="@model.Type1" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Type 1
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" @bind-value="@model.Type2" id="flexCheckDefault2">
+                <label class="form-check-label" for="flexCheckDefault2">
+                    Type 2
+                </label>
+            </div>
+
+            <div class="form-check mt-5">
+                <input class="form-check-input" type="checkbox" @bind-value="@useToastr" id="flexCheckDefault2">
+                <label class="form-check-label" for="flexCheckDefault2">
+                    Use Toastr Message
+                </label>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary mt-5">Submit</button>
+        </div>
+    </div>
+
+</EditForm>
+
+
+
+<CodeDisplay @ref="codeDisplayComponent" CodeSnippet="@snippet"></CodeDisplay>
+
+<button type="button" class="btn btn-secondary mt-5" @onclick="DisplayCode">Display Code</button>
+
+
+@code {
+
+    private FormExampleModel model = new();
+    private EditContext? editContext;
+    private string? snippet;
+    private ValidationMessageStore? messageStore;
+    private bool formSuccess;
+    private bool useToastr;
+
+    private CodeDisplay? codeDisplayComponent;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(model);
+        editContext.OnValidationRequested += HandleValidationRequested;
+        editContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
+        messageStore = new(editContext);
+
+        snippet = Resource.Form;
+    }
+
+    private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs args)
+    {
+        messageStore?.Clear();
+
+        // Custom validation logic
+        if (!model.Options)
+        {
+            messageStore?.Add(() => model.Options, "Select at least one.");
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        if (editContext != null && editContext.Validate())
+        {
+            // Valid form
+            if (useToastr)
+            {
+                toastService.ShowSuccess("You can have successfuly submitted the form.");
+            }
+            else
+            {
+                formSuccess = true;
+            }
+        }       
+    }
+
+    private async Task DisplayCode() => await codeDisplayComponent!.Show();
+
+}

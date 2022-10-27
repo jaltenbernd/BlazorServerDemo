@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="array" xml:space="preserve">
+    <value>@page "/jstonet"
+@inject IJSRuntime JS
+
+
+&lt;button class="btn btn-primary mb-3" @onclick="ConvertArray"&gt;Convert Array&lt;/button&gt;
+
+&lt;p&gt;
+    @text
+&lt;/p&gt;
+
+
+
+
+@code {
+
+    private MarkupString text;
+    private IJSObjectReference jsModule = null!;
+
+    private uint[] quoteArray =
+        new uint[]
+        {
+            60, 101, 109, 62, 67, 97, 110, 39, 116, 32, 115, 116, 111, 112, 32,
+            116, 104, 101, 32, 115, 105, 103, 110, 97, 108, 44, 32, 77, 97,
+            108, 46, 60, 47, 101, 109, 62, 32, 45, 32, 77, 114, 46, 32, 85, 110,
+            105, 118, 101, 114, 115, 101, 10, 10,
+        };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            jsModule = await JS.InvokeAsync&lt;IJSObjectReference&gt;("import", "./Pages/JStoNet.razor.js");
+        }
+    }
+
+    private async Task ConvertArray()
+    {
+        text = new(await jsModule.InvokeAsync&lt;string&gt;("convertArray", quoteArray));
+    }
+	
+}
+
+
+
+// JavaScript class located in JS code behind: JStoNet.razor.js
+
+export function convertArray(win1251Array) {
+    var win1251decoder = new TextDecoder('windows-1251');
+    var bytes = new Uint8Array(win1251Array);
+    var decodedArray = win1251decoder.decode(bytes);
+
+    return decodedArray;
+};</value>
+  </data>
+  <data name="bunit" xml:space="preserve">
+    <value>using BlazorServerDemo.Pages;
+
+namespace BlazorServerDemo.bUnit
+{
+    /// &lt;summary&gt;
+    /// These tests are written entirely in C#.
+    /// Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-cs-files
+    /// &lt;/summary&gt;
+    [TestClass]
+    public class CounterCSharpTests : BunitTestContext
+    {
+        [TestMethod]
+        public void CounterStartsAtZero()
+        {
+            // Arrange
+            var cut = RenderComponent&lt;Counter&gt;();
+
+            // Assert that content of the paragraph shows counter at zero
+            cut.Find("p").MarkupMatches("&lt;p role='status'&gt;Current count: 0&lt;/p&gt;");
+        }
+
+        [TestMethod]
+        public void ClickingButtonIncrementsCounter()
+        {
+            // Arrange
+            var cut = RenderComponent&lt;Counter&gt;();
+
+            // Act - click button to increment counter
+            cut.Find("button").Click();
+
+            // Assert that the counter was incremented
+            cut.Find("p").MarkupMatches("&lt;p role='status'&gt;Current count: 1&lt;/p&gt;");
+        }
+    }
+}</value>
+  </data>
+  <data name="Form" xml:space="preserve">
+    <value>@page "/forms"
+@using BlazorServerDemo.Helpers
+@using BlazorServerDemo.Models
+@inject IToastService toastService
+
+&lt;PageTitle&gt;Blazor Server Demo: Form&lt;/PageTitle&gt;
+
+&lt;h2 class="mb-5"&gt;Form Example&lt;/h2&gt;
+
+
+@if (formSuccess)
+{
+    &lt;p class="text-success"&gt;Success! Your form was submitted succesfully.&lt;/p&gt;
+}
+
+&lt;EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit"&gt;
+    &lt;DataAnnotationsValidator /&gt;
+    &lt;ValidationSummary /&gt;
+
+    &lt;div class="row"&gt;
+        &lt;div class="col-6"&gt;
+            &lt;div class="mb-3"&gt;
+                &lt;label for="firstname" class="form-label"&gt;First Name&lt;/label&gt;
+                &lt;InputText id="firstname" @bind-Value="model.FirstName" class="form-control" /&gt;
+                &lt;ValidationMessage For="@(() =&gt; model.FirstName)" /&gt;
+            &lt;/div&gt;
+            &lt;div class="mb-3"&gt;
+                &lt;label for="lastname" class="form-label"&gt;Last Name&lt;/label&gt;
+                &lt;InputText id="lastname" @bind-Value="model.LastName" class="form-control" /&gt;
+            &lt;/div&gt;
+            &lt;div class="mb-5"&gt;
+                &lt;label for="email" class="form-label"&gt;Email&lt;/label&gt;
+                &lt;InputText id="email" @bind-Value="model.Email" class="form-control" /&gt;
+            &lt;/div&gt;
+
+            &lt;ValidationMessage For="() =&gt; model.Options" /&gt;
+            &lt;div class="form-check"&gt;
+                &lt;input class="form-check-input" type="checkbox" @bind-value="@model.Type1" id="flexCheckDefault"&gt;
+                &lt;label class="form-check-label" for="flexCheckDefault"&gt;
+                    Type 1
+                &lt;/label&gt;
+            &lt;/div&gt;
+            &lt;div class="form-check"&gt;
+                &lt;input class="form-check-input" type="checkbox" @bind-value="@model.Type2" id="flexCheckDefault2"&gt;
+                &lt;label class="form-check-label" for="flexCheckDefault2"&gt;
+                    Type 2
+                &lt;/label&gt;
+            &lt;/div&gt;
+
+            &lt;div class="form-check mt-5"&gt;
+                &lt;input class="form-check-input" type="checkbox" @bind-value="@useToastr" id="flexCheckDefault2"&gt;
+                &lt;label class="form-check-label" for="flexCheckDefault2"&gt;
+                    Use Toastr Message
+                &lt;/label&gt;
+            &lt;/div&gt;
+
+
+            &lt;button type="submit" class="btn btn-primary mt-5"&gt;Submit&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+&lt;/EditForm&gt;
+
+
+
+&lt;CodeDisplay @ref="codeDisplayComponent" CodeSnippet="@snippet"&gt;&lt;/CodeDisplay&gt;
+
+&lt;button type="button" class="btn btn-secondary mt-5" @onclick="DisplayCode"&gt;Display Code&lt;/button&gt;
+
+
+@code {
+
+    private FormExampleModel model = new();
+    private EditContext? editContext;
+    private string? snippet;
+    private ValidationMessageStore? messageStore;
+    private bool formSuccess;
+    private bool useToastr;
+
+    private CodeDisplay? codeDisplayComponent;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(model);
+        editContext.OnValidationRequested += HandleValidationRequested;
+        editContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
+        messageStore = new(editContext);
+
+        snippet = Resource.Form;
+    }
+
+    private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs args)
+    {
+        messageStore?.Clear();
+
+        // Custom validation logic
+        if (!model.Options)
+        {
+            messageStore?.Add(() =&gt; model.Options, "Select at least one.");
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        if (editContext != null &amp;&amp; editContext.Validate())
+        {
+            // Valid form
+            if (useToastr)
+            {
+                toastService.ShowSuccess("You can have successfuly submitted the form.");
+            }
+            else
+            {
+                formSuccess = true;
+            }
+        }       
+    }
+
+    private async Task DisplayCode() =&gt; await codeDisplayComponent!.Show();
+
+}</value>
+  </data>
+  <data name="Instance" xml:space="preserve">
+    <value>@page "/nettojs"
+@implements IDisposable
+@inject IJSRuntime JS
+
+
+&lt;p&gt;Name: &lt;input @bind="name" class="form-control" /&gt;&lt;/p&gt;
+
+&lt;button class="btn btn-primary" @onclick="TriggerDotNetInstanceMethod"&gt;
+	Trigger .NET instance method
+&lt;/button&gt;
+
+&lt;p class="fw-bold mt-2"&gt;Result: @result&lt;/p&gt;
+
+
+
+@code {
+
+    private string? name;
+    private string? result;
+    private DotNetObjectReference&lt;NetToJs&gt;? objRef;
+	
+	protected override void OnInitialized()
+    {
+        objRef = DotNetObjectReference.Create(this);
+    }
+
+    public async Task TriggerDotNetInstanceMethod()
+    {
+        result = await JS.InvokeAsync&lt;string&gt;("sayHello1", objRef);
+    }
+
+    [JSInvokable]
+    public string GetHelloMessage() =&gt; $"Hello, {name}!";
+	
+    public void Dispose()
+    {
+        objRef?.Dispose();
+    }
+	
+}
+
+
+// JavaScript function located in app.js
+
+window.sayHello1 = (dotNetHelper) =&gt; {
+    return dotNetHelper.invokeMethodAsync('GetHelloMessage');
+};</value>
+  </data>
+  <data name="multiple" xml:space="preserve">
+    <value>@page "/nettojs"
+@implements IDisposable
+@inject IJSRuntime JS
+
+
+
+&lt;p&gt;Name: &lt;input @bind="name" class="form-control" /&gt;&lt;/p&gt;
+
+&lt;button class="btn btn-primary mb-2" onclick="GreetingHelpers.sayHello()"&gt;
+     Trigger JS function - &lt;strong&gt;sayHello&lt;/strong&gt;
+&lt;/button&gt;
+
+&lt;button class="btn btn-primary mb-2" onclick="GreetingHelpers.welcomeVisitor()"&gt;
+     Trigger JS function - &lt;strong&gt;welcomeVisitor&lt;/strong&gt;
+&lt;/button&gt;
+
+
+@code {
+
+    private string? name;
+    private DotNetObjectReference&lt;NetToJs&gt;? dotNetHelper;
+	
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeAsync&lt;IJSObjectReference&gt;("import", "./Pages/NetToJs.razor.js");
+            dotNetHelper = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("GreetingHelpers.setDotNetHelper", dotNetHelper);
+        }
+    }
+	
+    [JSInvokable]
+    public string GetHelloMessage() =&gt; $"Hello, {name}!";
+	
+    [JSInvokable]
+    public string GetWelcomeMessage() =&gt; $"Welcome, {name}!";
+	
+    public void Dispose()
+    {
+        dotNetHelper?.Dispose();
+    }
+	
+	
+}
+
+
+// JavaScript class located in JS code behind: NetToJs.razor.js
+
+class GreetingHelpers {
+    static dotNetHelper;
+
+    static setDotNetHelper(value) {
+        GreetingHelpers.dotNetHelper = value;
+    }
+
+    static async sayHello() {
+        const msg = await GreetingHelpers.dotNetHelper.invokeMethodAsync('GetHelloMessage');
+        alert(`Message from .NET: "${msg}"`);
+    }
+
+    static async welcomeVisitor() {
+        const msg = await GreetingHelpers.dotNetHelper.invokeMethodAsync('GetWelcomeMessage');
+        alert(`Message from .NET: "${msg}"`);
+    }
+}
+
+window.GreetingHelpers = GreetingHelpers;</value>
+  </data>
+  <data name="StaticJS" xml:space="preserve">
+    <value>&lt;button class="btn btn-primary mb-2" onclick="returnArrayAsync()"&gt;
+    Trigger .NET static method
+&lt;/button&gt;
+
+
+@code { 
+
+    [JSInvokable]
+    public static Task ReturnArrayAsync()
+    {
+        return Task.FromResult(new int[] { 1, 2, 3 });
+    }  
+
+}
+
+
+// JavaScript function located in app.js 
+
+window.returnArrayAsync = () =&gt; {
+    DotNet.invokeMethodAsync('BlazorServerDemo', 'ReturnArrayAsync')
+        .then(data =&gt; {
+            alert(data);
+        });
+};</value>
+  </data>
+</root>
